@@ -2,11 +2,22 @@ package main
 
 import (
 	"net/http"
-
 	"where2go/server/geo"
 
+	"where2go/server"
+
 	"github.com/gin-gonic/gin"
+	"go.uber.org/zap"
 )
+
+func init() {
+	logger, _ := zap.NewProduction()
+	defer logger.Sync()
+
+	server.Application = server.Where2Go{
+		Logger: logger,
+	}
+}
 
 func main() {
 	router := gin.Default()
@@ -19,5 +30,5 @@ func main() {
 
 	router.GET("/map", geo.MapHandler)
 
-	router.Run(":8888")
+	router.Run(":7654")
 }
