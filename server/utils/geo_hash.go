@@ -81,19 +81,18 @@ func findGeoHash(latLngs [][]float64, precision int) []string {
 		curHeight = heightFactor * float64(h)
 		for w := 0; w <= lngSegments; w++ {
 			curWidth = widthFactor * float64(w)
-			newLat, newLng := addXYToLatLng(curHeight, curWidth, boundingBox.MinLat, boundingBox.MinLng)
+			newLat, newLng := addXYToLatLng(-1*curHeight, curWidth, boundingBox.MaxLat, boundingBox.MinLng)
 			geoHashes[geohash.EncodeWithPrecision(newLat, newLng, uint(precision))] = struct{}{}
 		}
 	}
 
 	// TODO:filter out all those geohash which doesnt lie inside this shape
-
-	keys := make([]string, len(geoHashes))
-	i := 0
-	for k := range geoHashes {
-		keys[i] = k
-		i++
+	index := 0
+	hashes := make([]string, len(geoHashes))
+	for geoHash := range geoHashes {
+		hashes[index] = geoHash
+		index++
 	}
 
-	return keys
+	return hashes
 }
