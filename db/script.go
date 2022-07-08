@@ -38,10 +38,10 @@ type Geo struct {
 	Time      []TimeGeo
 }
 
-var geoHash map[string]string
+var geoHash map[string]Geo
 
 func init() {
-	geoHash = make(map[string]string)
+	geoHash = make(map[string]Geo)
 }
 
 /*
