@@ -8,6 +8,36 @@ import (
 	"github.com/mmcloughlin/geohash"
 )
 
+type PlaceAttribute int
+
+const (
+	HotelName PlaceAttribute = iota
+	ActorName
+	HotelBooking
+	NumberOfVisitors
+)
+
+type StaticGeo struct {
+	GeoHash        string
+	Attribute      PlaceAttribute
+	AttributeValue interface{}
+}
+
+type TimeGeo struct {
+	GeoHash        string
+	Date           time.Time
+	Attribute      PlaceAttribute // will be same for each row
+	AttributeValue interface{}
+}
+
+type Geo struct {
+	GeoHash   string
+	Latitude  float64
+	Longitude float64
+	Static    StaticGeo
+	Time      []TimeGeo
+}
+
 var geoHash map[string]string
 
 func init() {
@@ -46,12 +76,15 @@ func generateData(latLngs [][]float64, count int) {
 		randLat := boundingBox.MinLat + rand.Float64()*(boundingBox.MaxLat-boundingBox.MinLat)
 		randLng := boundingBox.MinLng + rand.Float64()*(boundingBox.MaxLng-boundingBox.MinLng)
 
-		geohash.EncodeWithPrecision(randLat, randLng, uint(precision))
+		hash := geohash.EncodeWithPrecision(randLat, randLng, uint(precision))
+		if _, ok := geoHash[hash]; ok {
+			// static data
 
-		// static data
-
-		// non-static data
-		// range over [from, to] date + random event
-
+			// non-static data
+			// range over [from, to] date + random event
+		} else {
+			i--
+			continue
+		}
 	}
 }
