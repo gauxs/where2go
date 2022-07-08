@@ -11,7 +11,7 @@ func TestGeoHash(t *testing.T) {
 	latLngs[2] = []float64{6.58, 100.0}
 	latLngs[3] = []float64{6.58, 67.67}
 
-	geoHashesOfIndia := findGeoHash(latLngs, 2)
+	geoHashesOfIndia := findGeoHash(latLngs, 3)
 	for _, hash := range geoHashesOfIndia {
 		t.Log(hash)
 	}
