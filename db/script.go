@@ -8,11 +8,15 @@ import (
 	"github.com/mmcloughlin/geohash"
 )
 
+var actorNames = []string{
+	"Sharukh Khan", "Akshay Kumar", "Salman Khan", "Ajay Devgn",
+	"Aamir Khan", "Hrithik Roshan", "Shahid Kapoor", "Tiger Shroff",
+	"Ranveer Singh", "Varun Dhawan", "Saif Ali Khan"}
+
 type PlaceAttribute int
 
 const (
-	HotelName PlaceAttribute = iota
-	ActorName
+	ActorName PlaceAttribute = iota
 	HotelBooking
 	NumberOfVisitors
 )
@@ -34,7 +38,9 @@ type Geo struct {
 	GeoHash   string
 	Latitude  float64
 	Longitude float64
-	Static    StaticGeo
+	Type      string // Hotel | Amusement | Religious | Nature
+	Name      string // pool of pre-defined names
+	Static    []StaticGeo
 	Time      []TimeGeo
 }
 
@@ -79,9 +85,23 @@ func generateData(latLngs [][]float64, count int) {
 		hash := geohash.EncodeWithPrecision(randLat, randLng, uint(precision))
 		if _, ok := geoHash[hash]; ok {
 			// static data
+			// either a hotel or a site
+			// actor visited with less probability
+			// static := StaticGeo{
+			// 	GeoHash:        hash,
+			// 	Attribute:      ActorName, // HotelName | ActorName
+			// 	AttributeValue: "Sharukh Khan",
+			// }
 
+			// add actor
 			// non-static data
 			// range over [from, to] date + random event
+
+			// geo := Geo{
+			// 	GeoHash:   hash,
+			// 	Latitude:  randLat,
+			// 	Longitude: randLng,
+			// }
 		} else {
 			i--
 			continue
